@@ -1,0 +1,130 @@
+import { StyleSheet } from "react-native";
+
+export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    paddingHorizontal: 16,
+    paddingTop: 50,
+  },
+  header: {
+    fontSize: 28,
+    fontWeight: "700",
+    marginBottom: 20,
+  },
+  scrollContainer: {
+    paddingBottom: 100,
+  },
+  card: {
+    backgroundColor: "#f9f9f9",
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: "#eee",
+  },
+  cardImage: {
+    width: "100%",
+    height: 180,
+    borderRadius: 12,
+    marginBottom: 10,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginBottom: 4,
+  },
+  cardDesc: {
+    fontSize: 14,
+    color: "#555",
+    marginBottom: 8,
+  },
+  cardLink: {
+    color: "#007bff",
+    fontWeight: "500",
+  },
+  fab: {
+    position: "absolute",
+    right: 20,
+    bottom: 100,
+    backgroundColor: "#007bff",
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 5,
+    elevation: 6,
+  },
+  fabText: {
+    color: "#fff",
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.4)",
+    justifyContent: "flex-end",
+  },
+  modalContainer: {
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    padding: 20,
+    paddingBottom: 40,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 16,
+    fontSize: 16,
+  },
+  uploadButton: {
+    backgroundColor: "#eee",
+    borderRadius: 10,
+    padding: 12,
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  uploadText: {
+    color: "#333",
+    fontWeight: "600",
+  },
+  previewImage: {
+    width: "100%",
+    height: 150,
+    borderRadius: 10,
+    marginBottom: 16,
+  },
+  addButton: {
+    backgroundColor: "#007bff",
+    borderRadius: 12,
+    paddingVertical: 14,
+    marginBottom: 10,
+  },
+  addButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "600",
+    textAlign: "center",
+  },
+  cancelButton: {
+    paddingVertical: 12,
+  },
+  cancelText: {
+    color: "#555",
+    textAlign: "center",
+    fontSize: 16,
+  },
+});

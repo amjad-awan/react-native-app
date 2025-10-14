@@ -8,6 +8,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SignupScreen = () => {
   const navigation = useNavigation<any>();
@@ -15,7 +16,7 @@ const SignupScreen = () => {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     if (!email || !password || !confirm) {
       Alert.alert("Error", "Please fill in all fields");
       return;
@@ -26,8 +27,26 @@ const SignupScreen = () => {
       return;
     }
 
-    console.log("Registered:", email);
-    navigation.reset({ index: 0, routes: [{ name: "Tabs" }] });
+    try {
+      const existingUsers = await AsyncStorage.getItem("users");
+      const users = existingUsers ? JSON.parse(existingUsers) : [];
+
+      const userExists = users.some((u: any) => u.email === email);
+      if (userExists) {
+        Alert.alert("Error", "User already registered!");
+        return;
+      }
+
+      const newUser = { email, password };
+      const updatedUsers = [...users, newUser];
+      await AsyncStorage.setItem("users", JSON.stringify(updatedUsers));
+
+      Alert.alert("Success", "Account created successfully!");
+      navigation.reset({ index: 0, routes: [{ name: "Login" }] });
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Error", "Something went wrong while saving data");
+    }
   };
 
   return (

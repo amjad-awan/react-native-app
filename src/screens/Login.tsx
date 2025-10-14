@@ -8,20 +8,43 @@ import {
   StyleSheet,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAuth } from "../context/AuthContext";
 
-const LoginScreen = () => {
+export default function LoginScreen() {
   const navigation = useNavigation<any>();
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert("Error", "Please fill in all fields");
       return;
     }
 
-    console.log("Logging in with", email, password);
-    navigation.reset({ index: 0, routes: [{ name: "Tabs" }] });
+    try {
+      const savedUsers = await AsyncStorage.getItem("users");
+      const users = savedUsers ? JSON.parse(savedUsers) : [];
+
+      const foundUser = users.find(
+        (u: any) => u.email === email && u.password === password
+      );
+
+      if (!foundUser) {
+        Alert.alert("Error", "Invalid email or password");
+        return;
+      }
+
+      // ✅ Save currently logged-in user
+      await AsyncStorage.setItem("currentUser", JSON.stringify(foundUser));
+      login(foundUser.email, foundUser.password);
+
+      navigation.reset({ index: 0, routes: [{ name: "Tabs" }] });
+    } catch (err) {
+      console.error(err);
+      Alert.alert("Error", "Login failed");
+    }
   };
 
   return (
@@ -51,55 +74,19 @@ const LoginScreen = () => {
       <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
         <Text style={styles.footerText}>
           Don’t have an account?{" "}
-          <Text style={styles.linkText}>Sign up</Text>
+          <Text style={styles.linkText}>Sign Up</Text>
         </Text>
       </TouchableOpacity>
     </View>
   );
-};
-
-export default LoginScreen;
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    paddingHorizontal: 24,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "700",
-    textAlign: "center",
-    marginBottom: 40,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 12,
-    padding: 14,
-    marginBottom: 16,
-    fontSize: 16,
-  },
-  button: {
-    backgroundColor: "#000",
-    borderRadius: 12,
-    paddingVertical: 14,
-    marginBottom: 16,
-  },
-  buttonText: {
-    color: "#fff",
-    textAlign: "center",
-    fontSize: 18,
-    fontWeight: "600",
-  },
-  footerText: {
-    textAlign: "center",
-    color: "#555",
-    fontSize: 14,
-  },
-  linkText: {
-    color: "#007bff",
-    fontWeight: "600",
-  },
+  container: { flex: 1, justifyContent: "center", padding: 24, backgroundColor: "#fff" },
+  title: { fontSize: 28, fontWeight: "700", textAlign: "center", marginBottom: 40 },
+  input: { borderWidth: 1, borderColor: "#ccc", borderRadius: 12, padding: 14, marginBottom: 16 },
+  button: { backgroundColor: "#000", borderRadius: 12, paddingVertical: 14 },
+  buttonText: { color: "#fff", textAlign: "center", fontSize: 18, fontWeight: "600" },
+  footerText: { textAlign: "center", color: "#555", marginTop: 20 },
+  linkText: { color: "#007bff", fontWeight: "600" },
 });
